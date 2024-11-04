@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Label",
+"class": "AutoSizeLabel",
+"language": "GDScript",
+"path": "res://Tools/auto_size_label.gd"
+}, {
 "base": "Node2D",
 "class": "GameTooltip",
 "language": "GDScript",
@@ -19,7 +24,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Game.gd"
 }, {
-"base": "Label",
+"base": "Control",
 "class": "PointCounter",
 "language": "GDScript",
 "path": "res://Scenes/MainSession/PointCounter.gd"
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://Scenes/MainSession/PointParticle.gd"
 } ]
 _global_script_class_icons={
+"AutoSizeLabel": "",
 "GameTooltip": "",
 "MainGame": "",
 "PointCounter": "",
