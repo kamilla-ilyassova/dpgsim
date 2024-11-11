@@ -92,6 +92,7 @@ icon = ExtResource( 13 )
 regionIndex = 6
 
 [node name="ScenarioList" type="Control" parent="CenterContainer"]
+visible = false
 margin_left = 320.0
 margin_top = 320.0
 margin_right = 320.0
