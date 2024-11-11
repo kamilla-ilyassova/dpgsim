@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 func Start():
 	$Title.text = trans.local("YOU_WIN")

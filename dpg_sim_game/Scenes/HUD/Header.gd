@@ -1,4 +1,4 @@
-extends ColorRect
+extends Node
 
 func Start():
 	$DateCounter.Start()

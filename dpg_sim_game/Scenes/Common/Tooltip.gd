@@ -1,5 +1,5 @@
 class_name GameTooltip
-extends Node2D
+extends CanvasLayer
 
 var callback
 var closeIsProceed = false

@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 func Start():
 	$ActionOption1.present = int(global.actions[0]["StartingPhase"]) <= global.curPhaseIndex

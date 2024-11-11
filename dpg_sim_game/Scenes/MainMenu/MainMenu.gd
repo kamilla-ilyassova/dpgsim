@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 func Start():
 	$Start_Button.connect("buttonPressed", global.game, "_on_Start_Button_buttonPressed")

@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 onready var allTeams = [$Management,$Development,$Design,$Product,$Marketing,$QA,$Support]
 var teamLimit = 5

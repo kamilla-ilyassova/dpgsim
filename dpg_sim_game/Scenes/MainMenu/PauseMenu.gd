@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 func Start():
 	$Exit_Button.connect("buttonPressed", global.game, "ExitGame")
