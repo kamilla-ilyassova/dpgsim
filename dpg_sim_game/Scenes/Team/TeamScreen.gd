@@ -68,9 +68,8 @@ func HireWorker(type):
 		teamLimit = ManagerLNfunc(team["Management"]) 
 		global.game.HireWorker(1)
 		UpdateTeamSizeLabel()
-		return
 	
-	if teamSize < teamLimit:
+	elif teamSize < teamLimit:
 		teamSize += 1
 		team[type] += 1
 		global.game.HireWorker(1)
@@ -79,19 +78,17 @@ func HireWorker(type):
 	allTeams[type].UpdateQuantity(team[type])
 
 func FireWorker(type):
-	if type != "Management":
-		if team[type] > 0:
-			teamSize -= 1
-			team[type] -= 1
-			global.game.HireWorker(-1)
-			UpdateTeamSizeLabel()
-		return
-	else:
-		if team[type] > 1 and teamSize <= ManagerLNfunc(team["Management"]-1):
-			team[type] -= 1
-			global.game.HireWorker(-1)
-			teamLimit = ManagerLNfunc(team["Management"])
-			UpdateTeamSizeLabel()
+	if type != "Management" && team[type] > 0:
+		teamSize -= 1
+		team[type] -= 1
+		global.game.HireWorker(-1)
+		UpdateTeamSizeLabel()
+		
+	elif team[type] > 1 and teamSize <= ManagerLNfunc(team["Management"]-1):
+		team[type] -= 1
+		global.game.HireWorker(-1)
+		teamLimit = ManagerLNfunc(team["Management"])
+		UpdateTeamSizeLabel()
 
 	allTeams[type].UpdateQuantity(team[type])
 

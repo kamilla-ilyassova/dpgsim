@@ -21,7 +21,8 @@ func Start():
 		for i in range(global.scenarios.size()):
 			if (global.scenarios[i]["MapRegion"] == regionInd):
 				global.regionsActive[regionInd] = true
-				map_regions[regionInd].connect("on_map_region_pressed", self, "OpenScenarioList")
+				if (!map_regions[regionInd].is_connected("map_region_pressed", self, "OpenScenarioList")):
+					map_regions[regionInd].connect("map_region_pressed", self, "OpenScenarioList")
 				break
 	global.game.gameTooltip.SetTooltip(trans.local("MAP_POPUP_TITLE"), trans.local("MAP_POPUP_DESC"), null)
 

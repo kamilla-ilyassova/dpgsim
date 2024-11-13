@@ -21,7 +21,6 @@ func Select(on):
 
 func _on_ScenarioOption_pressed():
 	emit_signal("on_scenario_pressed", scenarioIndex)
-	# get_parent().get_parent().get_parent().get_parent().SelectScenario(scenarioIndex)
 	Select(true)
 
 func InitScenarioButton(index):

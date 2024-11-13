@@ -10,6 +10,11 @@
 [node name="PauseMenu" type="CanvasLayer"]
 script = ExtResource( 3 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.607843, 0.670588, 0.698039, 0.698039 )
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,11 +23,6 @@ anchor_bottom = 1.0
 margin_right = 640.0
 margin_bottom = 640.0
 rect_min_size = Vector2( 640, 640 )
-
-[node name="ColorRect" type="ColorRect" parent="CenterContainer/Control"]
-margin_right = 640.0
-margin_bottom = 640.0
-color = Color( 0.607843, 0.670588, 0.698039, 0.698039 )
 
 [node name="DpgLogo" type="TextureRect" parent="CenterContainer/Control"]
 margin_top = 64.0

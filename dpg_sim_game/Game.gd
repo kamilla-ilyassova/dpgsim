@@ -2,20 +2,18 @@ class_name MainGame
 extends Node2D
 
 # Dependencies
-onready var gameTooltip = 	$Tooltip
-onready var dateCounter = 	$MainSession/Header/HudLeft/DateCounter
-onready var teamScreen = 	$TeamScreen
-onready var soundManager = 	$Sounds
-onready var header = 		$HeaderLayer/Header
-onready var money = 		$HeaderLayer/Header/MoneySystem
-onready var phase_hud = 	$HeaderLayer/Header/HudRight/PhaseHUD
-onready var web_interface = $WebInterface
-onready var main_menu =		$MainMenu
-onready var pause_menu = 	$PauseMenu
-onready var mm_button = 	$MM_Button
-onready var map_screen = 	$MapScreen
-onready var main_session = 	$MainSession
-onready var win_screen = 	$WinScreen
+onready var gameTooltip = 		$Tooltip
+onready var teamScreen = 		$TeamScreen
+onready var soundManager = 		$Sounds
+onready var header = 			$Header
+onready var web_interface = 	$WebInterface
+onready var main_menu =			$MainMenu
+onready var pause_menu = 		$PauseMenu
+onready var options_header = 	$OptionsHeader
+onready var mm_button = 		$OptionsHeader/HudRight/Margin/MM_Button
+onready var map_screen = 		$MapScreen
+onready var main_session = 		$MainSession
+onready var win_screen = 		$WinScreen
 
 func _ready():
 	global.game = self
@@ -27,15 +25,15 @@ func _ready():
 	main_menu.Start()
 	pause_menu.Start()
 	mm_button.Start()
-	dateCounter.connect("dayTick", main_session, "CheckTime")
-	dateCounter.connect("dayTick", header, "CheckTime")
+	header.date_counter.connect("dayTick", main_session, "CheckTime")
+	header.date_counter.connect("dayTick", header, "CheckTime")
 
 func StartScenario():
 	map_screen.visible = false
 	global.curPhaseIndex = 0
 	header.Start()
-	money.SetMoney(global.curScenario()["Money"])
-	phase_hud.StartPhase()
+	header.money.SetMoney(global.curScenario()["Money"])
+	header.phase_hud.StartPhase()
 	header.visible = true
 	teamScreen.Start()
 	main_session.Start()
@@ -46,7 +44,7 @@ func StartScenario():
 	gameTooltip.SetTooltip(trans.local("SCENARIO_POPUP_TITLE"), trans.local("SCENARIO_POPUP_DESC"), null)
 
 func StartNextPhase():
-	phase_hud.StartPhase()
+	header.phase_hud.StartPhase()
 	$Projects.Start()
 	yield(get_tree().create_timer(0.1),"timeout")
 	$Projects.visible = true
@@ -67,7 +65,7 @@ func ProjectComplete():
 		return
 	PauseTimer(true)
 	global.ApplyInsights()
-	phase_hud.ShowButton(false)
+	header.phase_hud.ShowButton(false)
 	if global.curPhaseIndex == 1:
 		##################################################
 		# print("name your product")
@@ -85,15 +83,15 @@ var timerPaused = true
 func PauseTimer(pause):
 	timerPaused = pause
 	if pause:
-		dateCounter.timerOn = false
+		header.date_counter.timerOn = false
 	else:
-		dateCounter.t = 0
-		dateCounter.timerOn = true
+		header.date_counter.t = 0
+		header.date_counter.timerOn = true
 
 func GameOver():
 	PauseTimer(true)
 	main_session.office.ClearQueue()
-	phase_hud.ShowButton(false)
+	header.phase_hud.ShowButton(false)
 	gameTooltip.closeIsProceed = true
 	var callback = funcref(self, "ExitGame")
 	gameTooltip.SetTooltip(trans.local("GAME_OVER"), trans.local("GAME_OVER_DESCR"), callback)
@@ -117,14 +115,14 @@ func CalcScores():
 	else:
 		if header.totalDays < 672:
 			points += (672 - header.totalDays) * 3
-	points += money.total * 5
+	points += header.money.total * 5
 	return points
 
 
 
 func _on_Start_Button_buttonPressed():
 	main_menu.visible = false
-	mm_button.visible = true
+	options_header.visible = true
 	map_screen.visible = true
 	map_screen.Start()
 
@@ -135,25 +133,25 @@ func _on_language_changed(lang):
 func PauseGame(pause):
 	if not timerPaused:
 		if pause:
-			dateCounter.timerOn = false
+			header.date_counter.timerOn = false
 		else:
-			dateCounter.t = 0
-			dateCounter.timerOn = true
+			header.date_counter.t = 0
+			header.date_counter.timerOn = true
 	pause_menu.visible = pause
 
 func ExitGame():
 	PauseTimer(true)
 	global.ResetGame()
-	phase_hud.ResetPhases()
+	header.phase_hud.ResetPhases()
 	for child in get_children():
-		if !(child is CanvasItem):
+		if !(child is CanvasItem || child is CanvasLayer):
 			continue
 		child.visible = false
 	pause_menu.visible = false
 	main_menu.visible = true
 
 func HireWorker(quantity):
-	money.AddBurn(int(global.mainConfig["Salary"]) * quantity)
+	header.money.AddBurn(int(global.mainConfig["Salary"]) * quantity)
 	main_session.office.UpdateMinis()
 
 func OpenTeamScreen(open):
@@ -161,7 +159,7 @@ func OpenTeamScreen(open):
 	teamScreen.visible = open
 	main_session.visible = not open
 	if not open:
-		money.SetMaxBurn()
+		header.money.SetMaxBurn()
 
 func OpenActionScreen(open):
 	PauseTimer(open)
@@ -169,10 +167,10 @@ func OpenActionScreen(open):
 	main_session.visible = not open
 	
 func Overtime():
-	phase_hud.OverTime()
+	header.phase_hud.OverTime()
 
 func CheckEvents(day):
 	$EventManager.CheckEvents(day)
 
 func AddMoney(amount):
-	money.AddMoney(amount)
+	header.money.AddMoney(amount)

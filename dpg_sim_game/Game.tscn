@@ -31,9 +31,7 @@ script = ExtResource( 1 )
 [node name="WebInterface" type="Node2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="HeaderLayer" type="CanvasLayer" parent="."]
-
-[node name="Header" parent="HeaderLayer" instance=ExtResource( 12 )]
+[node name="Header" parent="." instance=ExtResource( 12 )]
 visible = false
 
 [node name="MainMenu" parent="." instance=ExtResource( 7 )]
@@ -54,17 +52,6 @@ visible = false
 [node name="ActionScreen" parent="." instance=ExtResource( 13 )]
 visible = false
 
-[node name="MM_Button" parent="." instance=ExtResource( 3 )]
-visible = false
-margin_left = 574.0
-margin_top = 12.0
-margin_right = 632.0
-margin_bottom = 66.0
-icon = ExtResource( 5 )
-buttonText = ""
-sPressed = ExtResource( 6 )
-sReleased = ExtResource( 5 )
-
 [node name="EventManager" parent="." instance=ExtResource( 22 )]
 visible = false
 
@@ -76,6 +63,31 @@ visible = false
 
 [node name="PauseMenu" parent="." instance=ExtResource( 23 )]
 visible = false
+
+[node name="OptionsHeader" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="HudRight" type="HBoxContainer" parent="OptionsHeader"]
+anchor_right = 1.0
+margin_bottom = 80.0
+custom_constants/separation = 0
+alignment = 2
+
+[node name="Margin" type="CenterContainer" parent="OptionsHeader/HudRight"]
+margin_left = 576.0
+margin_right = 640.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="MM_Button" parent="OptionsHeader/HudRight/Margin" instance=ExtResource( 3 )]
+margin_left = 3.0
+margin_top = 13.0
+margin_right = 61.0
+margin_bottom = 67.0
+icon = ExtResource( 5 )
+buttonText = ""
+sPressed = ExtResource( 6 )
+sReleased = ExtResource( 5 )
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
@@ -103,4 +115,4 @@ stream = ExtResource( 20 )
 [node name="Ching" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 21 )
 
-[connection signal="buttonPressed" from="MM_Button" to="." method="PauseGame" binds= [ true ]]
+[connection signal="buttonPressed" from="OptionsHeader/HudRight/Margin/MM_Button" to="." method="PauseGame" binds= [ true ]]
