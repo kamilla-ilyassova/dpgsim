@@ -29,6 +29,7 @@ margin_bottom = 115.0
 rect_min_size = Vector2( 640, 115 )
 
 [node name="ProductName" type="Label" parent="CenterContainerTop/Control"]
+visible = false
 margin_left = 24.0
 margin_top = 2.0
 margin_right = 616.0

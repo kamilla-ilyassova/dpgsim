@@ -1,11 +1,11 @@
 extends Node
 
 # Dependencies
-onready var total_node = 		$"../PanelContainer/HudLeft/Money/Margin/Control/Label"
-onready var total_money_node = 	$"../PanelContainer/HudLeft/Money/Margin/Control/Value"
-onready var cost_node = 		$"../PanelContainer/HudLeft/Money/Margin/Control/Cost"
-onready var burn_node = 		$"../PanelContainer/HudLeft/BurnRate/Margin/Control/Label"
-onready var burn_money = 		$"../PanelContainer/HudLeft/BurnRate/Margin/Control/Value"
+onready var total_node = 		$"../PanelContainer/MarginContainer/HudLeft/Money/Margin/Control/Label"
+onready var total_money_node = 	$"../PanelContainer/MarginContainer/HudLeft/Money/Margin/Control/Value"
+onready var cost_node = 		$"../PanelContainer/MarginContainer/HudLeft/Money/Margin/Control/Cost"
+onready var burn_node = 		$"../PanelContainer/MarginContainer/HudLeft/BurnRate/Margin/Control/Label"
+onready var burn_money = 		$"../PanelContainer/MarginContainer/HudLeft/BurnRate/Margin/Control/Value"
 
 var total = 0
 var burn : int = 0

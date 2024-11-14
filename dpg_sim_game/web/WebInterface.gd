@@ -205,7 +205,6 @@ func LoadData():
 	window.fetchEvents()
 	window.fetchActions()
 
-	# TODO: Find WHO DOES NOT LOAD
 	# number of async operations waiting for callbacks
 	var operations = 5
 	while data_load_progress < operations:

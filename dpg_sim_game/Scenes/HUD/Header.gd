@@ -1,9 +1,9 @@
 extends Node
 
 # Dependencies
-onready var date_counter = $PanelContainer/HudLeft/DateCounter
+onready var date_counter = $PanelContainer/MarginContainer/HudLeft/DateCounter
 onready var money = $MoneySystem
-onready var phase_hud = $PanelContainer/HudRight/PhaseHUD
+onready var phase_hud = $PanelContainer/MarginContainer/HudRight/PhaseHUD
 
 func Start():
 	date_counter.Start()
