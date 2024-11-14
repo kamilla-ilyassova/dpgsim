@@ -1,14 +1,19 @@
-extends ColorRect
+extends Node
+
+# Dependencies
+onready var date_counter = $PanelContainer/MarginContainer/HudLeft/DateCounter
+onready var money = $MoneySystem
+onready var phase_hud = $PanelContainer/MarginContainer/HudRight/PhaseHUD
 
 func Start():
-	$DateCounter.Start()
-	$Money.Start()
+	date_counter.Start()
+	money.Start()
 
 func StartProject():
-	$Money.Spend(global.curProject["MoneyCost"])
+	money.Spend(global.curProject["MoneyCost"])
 
 var totalDays = 0
 func CheckTime():
 	totalDays += 1
-	if $DateCounter.day == 1:
-		$Money.Salary()
+	if date_counter.day == 1:
+		money.Salary()

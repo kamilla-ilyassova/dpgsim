@@ -1,44 +1,57 @@
-extends Node2D
+extends Node
 
 var scenarioPrefab = preload("res://Scenes/ScenarioSelection/ScenarioOption.tscn")
-onready var buttonsParent = $ScenarioList/ScrollContainer/VBoxContainer
+
+# Dependencies
+onready var buttonsParent = $CenterContainer/ScenarioList/ScrollContainer/VBoxContainer
+onready var backButton = $CenterContainer/ScenarioList/Back_Button
+onready var startButton = $CenterContainer/ScenarioList/Start_Button
+onready var map = $CenterContainer/MapSprite
+onready var scenario_list = $CenterContainer/ScenarioList
+onready var scenario_list_scroll = $CenterContainer/ScenarioList/ScrollContainer
+onready var map_regions = $CenterContainer/MapSprite/Control.get_children()
+
 var buttonsList = []
 
 func Start():
-	$ScenarioList/Back_Button.Start()
-	$ScenarioList/Start_Button.Start()
+	backButton.Start()
+	startButton.Start()
 	_on_Back_Button_buttonPressed()
 	for regionInd in range(7):
 		for i in range(global.scenarios.size()):
 			if (global.scenarios[i]["MapRegion"] == regionInd):
 				global.regionsActive[regionInd] = true
+				if (!map_regions[regionInd].is_connected("map_region_pressed", self, "OpenScenarioList")):
+					map_regions[regionInd].connect("map_region_pressed", self, "OpenScenarioList")
 				break
 	global.game.gameTooltip.SetTooltip(trans.local("MAP_POPUP_TITLE"), trans.local("MAP_POPUP_DESC"), null)
 
 func OpenScenarioList(region):
-	$Map.visible = false
-	$ScenarioList.visible = true
+	map.visible = false
+	scenario_list.visible = true
 	for i in range(global.scenarios.size()):
 		if (global.scenarios[i]["MapRegion"] == region):
 			var newButton = scenarioPrefab.instance()
 			buttonsParent.add_child(newButton)
 			newButton.InitScenarioButton(i)
 			buttonsList.append(newButton)
+			newButton.connect("on_scenario_pressed", self, "SelectScenario")
 
 func SelectScenario(var scenarioIndex):
 	global.activeScenarioIndex = scenarioIndex
-	$ScenarioList/Start_Button.visible = true
+	startButton.visible = true
 	for button in buttonsList:
 		button.Select(false)
 
 
 
 func _on_Back_Button_buttonPressed():
-	$Map.visible = true
-	$ScenarioList.visible = false
-	$ScenarioList/Start_Button.visible = false
-	$ScenarioList/ScrollContainer.scroll_vertical = 0
+	map.visible = true
+	scenario_list.visible = false
+	startButton.visible = false
+	scenario_list_scroll.scroll_vertical = 0
 	for i in range(buttonsParent.get_child_count()):
+		buttonsParent.get_child(i).disconnect("on_scenario_pressed", self, "SelectScenario")
 		buttonsParent.get_child(i).queue_free()
 		buttonsList.clear()
 

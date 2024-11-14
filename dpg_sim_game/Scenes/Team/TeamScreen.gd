@@ -1,16 +1,28 @@
-extends Node2D
+extends Node
 
-onready var allTeams = [$Management,$Development,$Design,$Product,$Marketing,$QA,$Support]
+# Dependencies
+onready var allTeams = {
+	"Management": 	$CenterContainer/Control/Management,
+	"Development": 	$CenterContainer/Control/Development,
+	"Design": 		$CenterContainer/Control/Design,
+	"Product": 		$CenterContainer/Control/Product,
+	"Marketing": 	$CenterContainer/Control/Marketing,
+	"QA": 			$CenterContainer/Control/QA,
+	"Support": 		$CenterContainer/Control/Support
+}
+onready var back_button = $CenterContainer/Control/Back_Button
+onready var team_size = $CenterContainer/Control/TeamSize
+
 var teamLimit = 5
 var teamSize = 0
 var team : Dictionary = {
-	"Management": 1,
-	"Development": 0,
-	"Design": 0,
-	"Product": 0,
-	"Marketing": 0,
-	"QA": 0,
-	"Support": 0,
+	"Management": 	1,
+	"Development": 	0,
+	"Design": 		0,
+	"Product":		0,
+	"Marketing": 	0,
+	"QA": 			0,
+	"Support": 		0,
 }
 
 func Start():
@@ -20,10 +32,14 @@ func Start():
 		team[key] = 0
 	team["Management"] = 1
 	
-	$Back_Button.Start()
+	back_button.Start()
 	UpdateTeamSizeLabel()
 	for worker in allTeams:
-		worker.Start()
+		allTeams[worker].Start()
+		allTeams[worker].UpdateQuantity(team[worker])
+		if (!allTeams[worker].is_connected("worker_hire_pressed", self, "HireWorker")):
+			allTeams[worker].connect("worker_hire_pressed", self, "HireWorker")
+			allTeams[worker].connect("worker_fire_pressed", self, "FireWorker")
 
 func UpdateAvailableWorkers():
 	var ind = 0
@@ -44,7 +60,7 @@ func UpdateAvailableWorkers():
 			ind = 7
 	
 	for i in range(7):
-		allTeams[i].visible = i < ind
+		allTeams.values()[i].visible = i < ind
 
 func HireWorker(type):
 	if type == "Management":
@@ -52,28 +68,29 @@ func HireWorker(type):
 		teamLimit = ManagerLNfunc(team["Management"]) 
 		global.game.HireWorker(1)
 		UpdateTeamSizeLabel()
-		return
 	
-	if teamSize < teamLimit:
+	elif teamSize < teamLimit:
 		teamSize += 1
 		team[type] += 1
 		global.game.HireWorker(1)
 		UpdateTeamSizeLabel()
 
+	allTeams[type].UpdateQuantity(team[type])
+
 func FireWorker(type):
-	if type != "Management":
-		if team[type] > 0:
-			teamSize -= 1
-			team[type] -= 1
-			global.game.HireWorker(-1)
-			UpdateTeamSizeLabel()
-		return
-	else:
-		if team[type] > 1 and teamSize <= ManagerLNfunc(team["Management"]-1):
-			team[type] -= 1
-			global.game.HireWorker(-1)
-			teamLimit = ManagerLNfunc(team["Management"])
-			UpdateTeamSizeLabel()
+	if type != "Management" && team[type] > 0:
+		teamSize -= 1
+		team[type] -= 1
+		global.game.HireWorker(-1)
+		UpdateTeamSizeLabel()
+		
+	elif team[type] > 1 and teamSize <= ManagerLNfunc(team["Management"]-1):
+		team[type] -= 1
+		global.game.HireWorker(-1)
+		teamLimit = ManagerLNfunc(team["Management"])
+		UpdateTeamSizeLabel()
+
+	allTeams[type].UpdateQuantity(team[type])
 
 func GetTeamBonus(index, good):
 	var value = 0
@@ -102,7 +119,7 @@ func _on_Back_Button_buttonPressed():
 	global.game.OpenTeamScreen(false)
 
 func UpdateTeamSizeLabel():
-	$TeamSize.text = trans.local("TEAM_SIZE") + ": " + str(teamSize) + "/" + str(teamLimit)
+	team_size.text = trans.local("TEAM_SIZE") + ": " + str(teamSize) + "/" + str(teamLimit)
 
 func ManagerLNfunc(value):
 	return round(LNfunc(value)*3+2)

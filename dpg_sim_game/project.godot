@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Tools/auto_size_label.gd"
 }, {
-"base": "Node2D",
+"base": "CanvasLayer",
 "class": "GameTooltip",
 "language": "GDScript",
 "path": "res://Scenes/Common/Tooltip.gd"
@@ -58,7 +58,7 @@ trans="*res://trans.gd"
 window/size/width=640
 window/size/height=640
 window/stretch/mode="2d"
-window/stretch/aspect="keep"
+window/stretch/aspect="expand"
 
 [gui]
 
